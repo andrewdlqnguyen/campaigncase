@@ -65,7 +65,7 @@ const SearchBar = () => {
             className="dropdown-container px-4"
             style={{ listStyle: "none" }}
           >
-            {dropDownVehicleItems}
+            {dropDownCampaignItems}
           </ul>
         </DropdownPortal>
       )}
