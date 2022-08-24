@@ -16,49 +16,34 @@ const CampaignList = () => {
                 idList = [...idList, selectedCampaigns[i].id];
             }
             if (idList.length > newActiveContents.length) {
-                console.log(selectedCampaigns[selectedCampaigns.length - 1])
-                setActiveContents(
-                    (prevState) => [
-                        ...prevState,
-                        {
-                            id: selectedCampaigns[selectedCampaigns.length - 1]
-                                .id,
-                            name: selectedCampaigns[
-                                selectedCampaigns.length - 1
-                            ].name,
-                            active: false,
-                        }
-                    ]
-                    // selectedCampaigns.map((campaign) => ({
-                    //     id: campaign.id,
-                    //     name: campaign.name,
-                    //     active: false,
-                    // }))
-                );
+                console.log(selectedCampaigns[selectedCampaigns.length - 1]);
+                setActiveContents((prevState) => [
+                    ...prevState,
+                    {
+                        id: selectedCampaigns[selectedCampaigns.length - 1].id,
+                        name: selectedCampaigns[selectedCampaigns.length - 1]
+                            .name,
+                        active: false,
+                    },
+                ]);
             }
             if (idList.length < newActiveContents.length) {
                 let activeContentList = [];
                 for (let i = 0; i < newActiveContents.length; i++) {
-                    activeContentList = [...activeContentList, newActiveContents[i].id];
+                    activeContentList = [
+                        ...activeContentList,
+                        newActiveContents[i].id,
+                    ];
                 }
-                console.log(idList, activeContentList)
-                for(let i = 0; i < activeContentList.length; i++) {
-                    if(activeContentList[i] !== idList[i]) {
+                console.log(idList, activeContentList);
+                for (let i = 0; i < activeContentList.length; i++) {
+                    if (activeContentList[i] !== idList[i]) {
                         newActiveContents.splice(i, 1);
                         setActiveContents(newActiveContents);
                         break;
                     }
                 }
             }
-            // let activeList = [];
-            // for (let j = 0; j < newActiveContents.length; j++) {
-            //     newActiveContents[j].id;
-            // }
-
-            // newActiveContents.filter(x => x.id.includes(selectedCampaigns.map(x => x.id)))
-            console.log(idList);
-            console.log(newActiveContents.length);
-            // setActiveContent((prevState) => [...prevState, false]);
         } else {
             setActiveContents(() =>
                 selectedCampaigns.map((campaign) => ({
@@ -73,55 +58,58 @@ const CampaignList = () => {
     console.log(activeContents);
 
     const triggerContentHandler = (event, campaignID) => {
-        console.log(typeof event.currentTarget.id, campaignID);
+        console.log("hello", event.currentTarget.id, campaignID);
         const index = parseInt(event.currentTarget.id, 10);
         const newActiveContents = [...activeContents];
         newActiveContents[index].active = !newActiveContents[index].active;
         setActiveContents(newActiveContents);
     };
 
-    // const populateContentHandler = (id) => {
-    //     Fetch("http://localhost:4000/campaigns/" + id + "?number=0", (data) => {
-    //         setContent(data);
-    //     });
-    //     console.log("FETCH");
-    // };
-
     let campaignMetrics = activeContents.map((campaign, index) => (
-        <Accordion.Item
-            eventKey={campaign.id}
+        <div
+            className="accordion-item"
             key={campaign.id}
             id={index}
-            // onClick={() => populateContentHandler(campaign.id)}
             onClick={(event) => triggerContentHandler(event, campaign.id)}
         >
-            <Accordion.Header>
-                {campaign.name} - {campaign.id}
-            </Accordion.Header>
-            <Accordion.Body>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-                {/* {content && (
-                    <div>
-                        Impressions - {content.impressions} Clicks -{" "}
-                        {content.clicks} Users - {content.users}
-                    </div>
-                )} */}
-            </Accordion.Body>
-        </Accordion.Item>
+            <h2 className="accordion-header" id={`campaignHead-${campaign.id}`}>
+                <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#campaignCollapse-${campaign.id}`}
+                    aria-expanded="false"
+                    aria-controls={`#campaignCollapse-${campaign.id}`}
+                >
+                    {campaign.id} - {campaign.name}
+                </button>
+            </h2>
+            <div
+                id={`campaignCollapse-${campaign.id}`}
+                className="accordion-collapse collapse"
+                aria-labelledby={`campaignHead-${campaign.id}`}
+            >
+                <div className="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> It
+                    is shown by default, until the collapse plugin adds the
+                    appropriate classes that we use to style each element. These
+                    classes control the overall appearance, as well as the
+                    showing and hiding via CSS transitions. You can modify any
+                    of this with custom CSS or overriding our default variables.
+                    It's also worth noting that just about any HTML can go
+                    within the <code>.accordion-body</code>, though the
+                    transition does limit overflow.
+                </div>
+            </div>
+        </div>
     ));
 
     return (
         <>
             <div>CampaignList Component</div>
-            <Accordion defaultActiveKey={["0"]} alwaysOpen>
+            <div class="accordion" id="accordionPanelsStayOpenExample">
                 {campaignMetrics}
-            </Accordion>
+            </div>
         </>
     );
 };
