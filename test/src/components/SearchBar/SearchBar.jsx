@@ -15,20 +15,34 @@ const SearchBar = ({ campaignList: campaignList }) => {
         setSearchCampaign("");
         setShowDropdown(false);
 
-        selectedCampaign.forEach((item, index) => {
-            if (Object.values(item).includes(campaign.id)) {
-                const removeIndex = Object.values(item).indexOf(index);
-                let tempSelectedCampaign = selectedCampaign;
-                tempSelectedCampaign.splice(removeIndex, 1);
-                console.log("HELLO", tempSelectedCampaign);
-                setSelectedCampaign(tempSelectedCampaign);
+        setSelectedCampaign((prevState) => {
+            const newArray = [...prevState];
+            console.log(newArray);
+
+            let check = newArray.find((c) => c.id === campaign.id);
+
+            if (check) {
+                let list = newArray.filter((x) => {
+                    return x.id != check.id;
+                });
+                return list;
+            } else {
+                newArray.push(campaign);
+                return newArray;
             }
         });
-
-        setSelectedCampaign((prevState) => [...prevState, campaign]);
-        console.log(campaign);
     };
-    // console.log(selectedID);
+
+    const removeCampaignHandler = (campaign) => {
+        setSelectedCampaign((prevState) => {
+            const newArray = [...prevState];
+            console.log(newArray);
+
+            return  newArray.filter((x) => {
+                    return x.id != campaign.id;
+                });
+        });
+    };
 
     const dropdownClickHandler = (e) => {
         const rect = e.getBoundingClientRect();
@@ -38,11 +52,6 @@ const SearchBar = ({ campaignList: campaignList }) => {
         });
         setShowDropdown(true);
     };
-
-    // const selectedStyle = {
-    //   backgroundColor: "red",
-    // };
-    console.log("=========");
 
     let dropDownCampaignItems = campaigns
         .filter(
@@ -57,7 +66,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
                 backgroundColor: "red",
             };
             selectedCampaign.forEach((item) => {
-                if ((campaign.id, Object.values(item).includes(campaign.id))) {
+                if (Object.values(item).includes(campaign.id)) {
                     selectedStyle = {
                         backgroundColor: "green",
                     };
@@ -77,6 +86,19 @@ const SearchBar = ({ campaignList: campaignList }) => {
                 </li>
             );
         });
+
+    let selectedCampaignList = "";
+
+    if (selectedCampaign) {
+        selectedCampaignList = selectedCampaign.map((campaign, index) => (
+            <div key={index}>
+                <span>
+                    {campaign.id} - {campaign.name}{" "}
+                </span>
+                <span onClick={() => removeCampaignHandler(campaign)}>X</span>
+            </div>
+        ));
+    }
 
     return (
         <>
@@ -106,6 +128,9 @@ const SearchBar = ({ campaignList: campaignList }) => {
                     </ul>
                 </DropdownPortal>
             )}
+            <div>
+                {selectedCampaignList && <div>{selectedCampaignList}</div>}
+            </div>
         </>
     );
 };
