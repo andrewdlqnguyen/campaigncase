@@ -1,8 +1,8 @@
 import React from 'react';
 
 const campaignContext = React.createContext({
-  selectedCampaign: [],
-  updateSelectedCampaign: () => { },
+  selectedCampaigns: [],
+  updateSelectedCampaigns: () => { },
 });
 
 export default campaignContext;

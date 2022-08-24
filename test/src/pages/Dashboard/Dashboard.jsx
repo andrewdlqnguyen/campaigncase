@@ -35,7 +35,7 @@ const Dashboard = () => {
       {selectedCampaign && <div>{JSON.stringify(selectedCampaign)}</div>}
       {/* {!campaignList ? <></> : <div>{campaignList}</div>} */}
       {/* <ItemPool selectedCampaignItem={selectedCampaign}/> */}
-      {/* <CampaignList /> */}
+      <CampaignList />
     </>
   );
 };

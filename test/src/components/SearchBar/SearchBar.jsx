@@ -7,7 +7,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
     const [showDropdown, setShowDropdown] = useState(false);
     // const [selectedCampaign, setSelectedCampaign] = useState([]); //global state for itemPool to see it deselect
     const [coords, setCoords] = useState({});
-    const { selectedCampaign, updateSelectedCampaign : setSelectedCampaign } = useContext(campaignContext);
+    const { selectedCampaigns, updateSelectedCampaigns : setSelectedCampaigns } = useContext(campaignContext);
 
 
     let searchCount = 0; // dropdown search items
@@ -18,7 +18,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
         setSearchCampaign("");
         setShowDropdown(false);
 
-        setSelectedCampaign((prevState) => {
+        setSelectedCampaigns((prevState) => {
             const newArray = [...prevState];
             console.log(newArray);
 
@@ -37,7 +37,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
     };
 
     const removeCampaignHandler = (campaign) => {
-        setSelectedCampaign((prevState) => {
+        setSelectedCampaigns((prevState) => {
             const newArray = [...prevState];
             console.log(newArray);
 
@@ -68,7 +68,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
             let selectedStyle = {
                 backgroundColor: "red",
             };
-            selectedCampaign.forEach((item) => {
+            selectedCampaigns.forEach((item) => {
                 if (Object.values(item).includes(campaign.id)) {
                     selectedStyle = {
                         backgroundColor: "green",
@@ -92,8 +92,8 @@ const SearchBar = ({ campaignList: campaignList }) => {
 
     let selectedCampaignList = "";
 
-    if (selectedCampaign) {
-        selectedCampaignList = selectedCampaign.map((campaign, index) => (
+    if (selectedCampaigns) {
+        selectedCampaignList = selectedCampaigns.map((campaign, index) => (
             <div key={index}>
                 <span>
                     {campaign.id} - {campaign.name}{" "}

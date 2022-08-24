@@ -3,17 +3,17 @@ import { SaveToLocalStorage } from '../helper/helper';
 import CampaignContext from './campaign-context';
 
 const CampaignProvider = props => {
-  const [selectedCampaign, setSelectedCampaign] = useState([]); //global state for itemPool to see it deselect
+  const [selectedCampaigns, setSelectedCampaigns] = useState([]); //global state for itemPool to see it deselect
 
 
-  const updateSelectedCampaign = (value) => {
+  const updateSelectedCampaigns = (value) => {
     SaveToLocalStorage("selectedCampaign", value);
-    setSelectedCampaign(value);
+    setSelectedCampaigns(value);
   }
 
   const campaignContext = {
-    selectedCampaign: selectedCampaign,
-    updateSelectedCampaign: updateSelectedCampaign,
+    selectedCampaigns: selectedCampaigns,
+    updateSelectedCampaigns: updateSelectedCampaigns,
   };
 
   return (
