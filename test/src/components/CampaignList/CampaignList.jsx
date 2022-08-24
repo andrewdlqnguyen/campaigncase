@@ -1,7 +1,5 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import Accordion from "react-bootstrap/Accordion";
+import { useContext, useEffect, useState } from "react";
 import { Fetch } from "../../helper/helper";
-import usePingService from "../../helper/PingService";
 import campaignContext from "../../store/campaign-context";
 
 const CampaignList = () => {
@@ -56,13 +54,11 @@ const CampaignList = () => {
         }
     }, [selectedCampaigns]);
 
-    console.log(activeContents);
-
-    // let timer;
-
     const updateMetrics = (content, index) => {
-        let counter = 0;
-        let objectLocation = "temp";
+        let counter = contentMetrics[content.id]?.currentNumber
+            ? contentMetrics[content.id].currentNumber
+            : 0;
+        let objectLocation = "tempCampaign";
 
         content[objectLocation] = setInterval(() => {
             Fetch(
@@ -77,22 +73,29 @@ const CampaignList = () => {
                         ...prevState,
                         [content.id]: {
                             color: content.name,
-                            totalImpression: 
-                                prevState[content.id]?.totalImpression 
-                                ? prevState[content.id].totalImpression + data.impressions 
+                            totalImpression: prevState[content.id]
+                                ?.totalImpression
+                                ? prevState[content.id].totalImpression +
+                                  data.impressions
                                 : data.impressions,
-                            totalClicks: 
-                                prevState[content.id]?.totalClicks 
-                                ? prevState[content.id].totalClicks + data.clicks 
+                            totalClicks: prevState[content.id]?.totalClicks
+                                ? prevState[content.id].totalClicks +
+                                  data.clicks
                                 : data.clicks,
-                            totalUsers: 
-                                prevState[content.id]?.totalUsers 
-                                ? prevState[content.id].totalUsers + data.users 
+                            totalUsers: prevState[content.id]?.totalUsers
+                                ? prevState[content.id].totalUsers + data.users
                                 : data.users,
-                            ctr: 
-                                prevState[content.id]?.totalClicks 
-                                ? ((prevState[content.id].totalClicks / prevState[content.id].totalImpression) * 100).toFixed(2) + userPreference.ctrUnit 
-                                : ((data.clicks / data.impressions) * 100).toFixed(2) + userPreference.ctrUnit,
+                            ctr: prevState[content.id]?.totalClicks
+                                ? (
+                                      (prevState[content.id].totalClicks /
+                                          prevState[content.id]
+                                              .totalImpression) *
+                                      100
+                                  ).toFixed(2) + userPreference.ctrUnit
+                                : (
+                                      (data.clicks / data.impressions) *
+                                      100
+                                  ).toFixed(2) + userPreference.ctrUnit,
                             currentNumber: counter,
                             recentImpression: data.impressions,
                             recentClicks: data.clicks,
@@ -109,18 +112,15 @@ const CampaignList = () => {
     useEffect(() => {
         console.log(activeContents);
         activeContents.map((content, index) => {
+            let objectLocation = "tempCampaign";
             console.log(content);
-            let tempContent = content;
-            let objectLocation = "temp";
-            console.log(tempContent);
-            if (tempContent.active) {
-                console.log("ITS ACTIVE");
-                updateMetrics(tempContent, index);
+            if (content.active) {
+                clearInterval(content[objectLocation]);
+                updateMetrics(content, index);
             } else {
-                clearInterval(tempContent[objectLocation]);
+                clearInterval(content[objectLocation]);
             }
         });
-        // return () => clearInterval(timer);
     }, [activeContents]);
 
     const triggerContentHandler = (event, campaignID) => {
@@ -129,20 +129,10 @@ const CampaignList = () => {
         const newActiveContents = [...activeContents];
         newActiveContents[index].active = !newActiveContents[index].active;
         setActiveContents(newActiveContents);
-
-        if (newActiveContents[index].active) {
-            // let campaignMetrics = usePingService(campaignID, 5000);
-            // console.log(campaignMetrics);
-        }
     };
 
     let campaignMetrics = activeContents.map((campaign, index) => (
-        <div
-            className="accordion-item"
-            key={campaign.id}
-            id={index}
-            onClick={(event) => triggerContentHandler(event, campaign.id)}
-        >
+        <div className="accordion-item" key={campaign.id}>
             <h2 className="accordion-header" id={`campaignHead-${campaign.id}`}>
                 <button
                     className="accordion-button"
@@ -151,6 +141,10 @@ const CampaignList = () => {
                     data-bs-target={`#campaignCollapse-${campaign.id}`}
                     aria-expanded="false"
                     aria-controls={`#campaignCollapse-${campaign.id}`}
+                    id={index}
+                    onClick={(event) =>
+                        triggerContentHandler(event, campaign.id)
+                    }
                 >
                     {campaign.id} - {campaign.name}
                 </button>
@@ -163,15 +157,15 @@ const CampaignList = () => {
                 <div className="accordion-body">
                     {contentMetrics[campaign.id] && (
                         <div>
-                              {contentMetrics[campaign.id].color}
-                            | {contentMetrics[campaign.id].totalImpression}
-                            | {contentMetrics[campaign.id].totalClicks}
-                            | {contentMetrics[campaign.id].totalUsers}
-                            | {contentMetrics[campaign.id].ctr}
-                            | {contentMetrics[campaign.id].currentNumber}
-                            | {contentMetrics[campaign.id].recentImpression}
-                            | {contentMetrics[campaign.id].recentClicks}
-                            | {contentMetrics[campaign.id].recentUsers}
+                            {contentMetrics[campaign.id].color}|{" "}
+                            {contentMetrics[campaign.id].totalImpression}|{" "}
+                            {contentMetrics[campaign.id].totalClicks}|{" "}
+                            {contentMetrics[campaign.id].totalUsers}|{" "}
+                            {contentMetrics[campaign.id].ctr}|{" "}
+                            {contentMetrics[campaign.id].currentNumber}|{" "}
+                            {contentMetrics[campaign.id].recentImpression}|{" "}
+                            {contentMetrics[campaign.id].recentClicks}|{" "}
+                            {contentMetrics[campaign.id].recentUsers}
                         </div>
                     )}
                 </div>
@@ -179,8 +173,6 @@ const CampaignList = () => {
         </div>
     ));
 
-    // const hello = PingService(1,5000);
-    // console.log(hello);
     return (
         <>
             <div>CampaignList Component</div>
