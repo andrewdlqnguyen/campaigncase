@@ -4,7 +4,9 @@ import CampaignContext from './campaign-context';
 
 const CampaignProvider = props => {
   const [selectedCampaigns, setSelectedCampaigns] = useState([]); //global state for itemPool to see it deselect
-
+  const [userPreferences, setUserPreferences] = useState({
+    ctrUnit: "%",
+  });
 
   const updateSelectedCampaigns = (value) => {
     SaveToLocalStorage("selectedCampaign", value);
@@ -13,6 +15,7 @@ const CampaignProvider = props => {
 
   const campaignContext = {
     selectedCampaigns: selectedCampaigns,
+    userPreference: userPreferences,
     updateSelectedCampaigns: updateSelectedCampaigns,
   };
 

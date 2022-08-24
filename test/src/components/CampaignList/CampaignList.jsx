@@ -1,17 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import { Fetch } from "../../helper/helper";
+import usePingService from "../../helper/PingService";
 import campaignContext from "../../store/campaign-context";
 
 const CampaignList = () => {
-    const [content, setContent] = useState();
     const [activeContents, setActiveContents] = useState([]);
-    const { selectedCampaigns } = useContext(campaignContext);
+    const [contentMetrics, setContentMetrics] = useState({});
+    const { selectedCampaigns, userPreference } = useContext(campaignContext);
 
     useEffect(() => {
         if (activeContents) {
             const newActiveContents = [...activeContents];
-            let idList = []; // new selected id
+            let idList = [];
             for (let i = 0; i < selectedCampaigns.length; i++) {
                 idList = [...idList, selectedCampaigns[i].id];
             }
@@ -57,12 +58,82 @@ const CampaignList = () => {
 
     console.log(activeContents);
 
+    // let timer;
+
+    const updateMetrics = (content, index) => {
+        let counter = 0;
+        let objectLocation = "temp";
+
+        content[objectLocation] = setInterval(() => {
+            Fetch(
+                "http://localhost:4000/campaigns/" +
+                    content.id +
+                    "?number=" +
+                    counter,
+                (data) => {
+                    counter += 1;
+                    console.log(typeof data.impressions);
+                    setContentMetrics((prevState) => ({
+                        ...prevState,
+                        [content.id]: {
+                            color: content.name,
+                            totalImpression: 
+                                prevState[content.id]?.totalImpression 
+                                ? prevState[content.id].totalImpression + data.impressions 
+                                : data.impressions,
+                            totalClicks: 
+                                prevState[content.id]?.totalClicks 
+                                ? prevState[content.id].totalClicks + data.clicks 
+                                : data.clicks,
+                            totalUsers: 
+                                prevState[content.id]?.totalUsers 
+                                ? prevState[content.id].totalUsers + data.users 
+                                : data.users,
+                            ctr: 
+                                prevState[content.id]?.totalClicks 
+                                ? ((prevState[content.id].totalClicks / prevState[content.id].totalImpression) * 100).toFixed(2) + userPreference.ctrUnit 
+                                : ((data.clicks / data.impressions) * 100).toFixed(2) + userPreference.ctrUnit,
+                            currentNumber: counter,
+                            recentImpression: data.impressions,
+                            recentClicks: data.clicks,
+                            recentUsers: data.users,
+                        },
+                    }));
+                }
+            );
+        }, 5000);
+    };
+
+    console.log(contentMetrics);
+
+    useEffect(() => {
+        console.log(activeContents);
+        activeContents.map((content, index) => {
+            console.log(content);
+            let tempContent = content;
+            let objectLocation = "temp";
+            console.log(tempContent);
+            if (tempContent.active) {
+                console.log("ITS ACTIVE");
+                updateMetrics(tempContent, index);
+            } else {
+                clearInterval(tempContent[objectLocation]);
+            }
+        });
+        // return () => clearInterval(timer);
+    }, [activeContents]);
+
     const triggerContentHandler = (event, campaignID) => {
         console.log("hello", event.currentTarget.id, campaignID);
         const index = parseInt(event.currentTarget.id, 10);
         const newActiveContents = [...activeContents];
         newActiveContents[index].active = !newActiveContents[index].active;
         setActiveContents(newActiveContents);
+
+        if (newActiveContents[index].active) {
+            // let campaignMetrics = usePingService(campaignID, 5000);
+            // console.log(campaignMetrics);
+        }
     };
 
     let campaignMetrics = activeContents.map((campaign, index) => (
@@ -90,24 +161,30 @@ const CampaignList = () => {
                 aria-labelledby={`campaignHead-${campaign.id}`}
             >
                 <div className="accordion-body">
-                    <strong>This is the first item's accordion body.</strong> It
-                    is shown by default, until the collapse plugin adds the
-                    appropriate classes that we use to style each element. These
-                    classes control the overall appearance, as well as the
-                    showing and hiding via CSS transitions. You can modify any
-                    of this with custom CSS or overriding our default variables.
-                    It's also worth noting that just about any HTML can go
-                    within the <code>.accordion-body</code>, though the
-                    transition does limit overflow.
+                    {contentMetrics[campaign.id] && (
+                        <div>
+                              {contentMetrics[campaign.id].color}
+                            | {contentMetrics[campaign.id].totalImpression}
+                            | {contentMetrics[campaign.id].totalClicks}
+                            | {contentMetrics[campaign.id].totalUsers}
+                            | {contentMetrics[campaign.id].ctr}
+                            | {contentMetrics[campaign.id].currentNumber}
+                            | {contentMetrics[campaign.id].recentImpression}
+                            | {contentMetrics[campaign.id].recentClicks}
+                            | {contentMetrics[campaign.id].recentUsers}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     ));
 
+    // const hello = PingService(1,5000);
+    // console.log(hello);
     return (
         <>
             <div>CampaignList Component</div>
-            <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div className="accordion" id="campaignAccordionList">
                 {campaignMetrics}
             </div>
         </>

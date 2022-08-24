@@ -1,9 +1,7 @@
+
 export const Fetch = (url, callback) => {
     fetch(url)
         .then((response) => {
-            // if (!response.ok) {
-            //     throw new Error(response.statusText)
-            // }
             try {
                 return response.json();
             } catch (err) {
@@ -35,3 +33,31 @@ export const ReadFromLocalStorage = (objectName) => {
         return undefined
     }
 };
+
+export const PingService = (campaignID, timer) => {
+    // const [timeInterval, setTimeInterval] = useState();
+    // const [campaignInfo, setCampaignInfo] = useState();
+    // const counterRef = useRef(0);
+    // const totalImpression = useRef(0);
+    // const totalClicks = useRef(0);
+    // const totalUsers = useRef(0);
+    // const campaignMetrics = useRef(null);
+    let campaignMetrics = {};
+
+    let counter = 0;
+
+    console.log("IM IN")
+    setInterval(() => {
+        Fetch("http://localhost:4000/campaigns/" + campaignID + "?number=" + counter, (data) => {
+            campaignMetrics = {
+                totalImpression: data.impressions,
+                totalClicks: data.clicks,
+                totalUsers: data.users
+            }
+            counter += 1;
+            console.log(campaignMetrics)
+
+        });
+    }, timer)
+    return campaignMetrics;
+}
