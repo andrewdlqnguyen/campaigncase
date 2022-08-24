@@ -5,7 +5,7 @@ export const Portal = (props) => {
     const portalElement = document.getElementById("portal-root");
 
     // Don't delete this yet, this could be good use for backdrop - Andrew
-    // const backDropStyle: React.CSSProperties = {
+    // const backDropStyle= {
     //   position: "fixed",
     //   top: "0",
     //   left: "0",
@@ -19,6 +19,7 @@ export const Portal = (props) => {
       position: "absolute",
       backgroundColor: "white",
       color: "black",
+      border: "solid",
       zIndex: "30",
     };
 
