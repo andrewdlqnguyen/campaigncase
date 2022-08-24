@@ -19,3 +19,21 @@ export const Fetch = (url, callback) => {
             throw error;
         });
 };
+
+export const SaveToLocalStorage = (objectName, state) => {
+    try {
+        localStorage.setItem(objectName, JSON.stringify(state));
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+export const ReadFromLocalStorage = (objectName) => {
+    try {
+        const stateStr = localStorage.getItem(objectName);
+        return stateStr ? JSON.parse(stateStr) : undefined;
+    } catch (e) {
+        console.error(e);
+        return undefined
+    }
+};

@@ -1,4 +1,5 @@
 import Dashboard from "./pages/Dashboard/Dashboard";
+import CampaignProvider from "./store/CampaignProvider";
 
 /**
  * App will be lean and contain only components, wrappers, routes.
@@ -6,9 +7,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
  */
 const App = () => {
   return (
-    <>
-     <Dashboard/>
-    </>
+    <CampaignProvider>
+      <Dashboard />
+    </CampaignProvider>
   );
 }
 

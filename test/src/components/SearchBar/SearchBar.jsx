@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import campaignContext from "../../store/campaign-context";
 import { Portal as DropdownPortal } from "./Portal/Portal";
 
 const SearchBar = ({ campaignList: campaignList }) => {
     const [searchCampaign, setSearchCampaign] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
-    const [selectedCampaign, setSelectedCampaign] = useState([]); //global state for itemPool to see it deselect
+    // const [selectedCampaign, setSelectedCampaign] = useState([]); //global state for itemPool to see it deselect
     const [coords, setCoords] = useState({});
+    const { selectedCampaign, updateSelectedCampaign : setSelectedCampaign } = useContext(campaignContext);
+
 
     let searchCount = 0; // dropdown search items
     let campaigns = campaignList;
