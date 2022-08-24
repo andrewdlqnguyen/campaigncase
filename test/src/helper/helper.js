@@ -4,8 +4,6 @@ export const Fetch = (url, callback) => {
             // if (!response.ok) {
             //     throw new Error(response.statusText)
             // }
-
-            console.log("fetching....", response)
             try {
                 return response.json();
             } catch (err) {

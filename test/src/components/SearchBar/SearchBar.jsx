@@ -12,7 +12,6 @@ const SearchBar = ({ campaignList: campaignList }) => {
 
     let searchCount = 0; // dropdown search items
     let campaigns = campaignList;
-    console.log(campaigns);
 
     const selectCampaignHandler = (campaign) => {
         setSearchCampaign("");
@@ -20,7 +19,6 @@ const SearchBar = ({ campaignList: campaignList }) => {
 
         setSelectedCampaigns((prevState) => {
             const newArray = [...prevState];
-            console.log(newArray);
 
             let check = newArray.find((c) => c.id === campaign.id);
 
@@ -39,7 +37,6 @@ const SearchBar = ({ campaignList: campaignList }) => {
     const removeCampaignHandler = (campaign) => {
         setSelectedCampaigns((prevState) => {
             const newArray = [...prevState];
-            console.log(newArray);
 
             return  newArray.filter((x) => {
                     return x.id != campaign.id;
