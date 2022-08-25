@@ -3,6 +3,7 @@ import campaignContext from "../../store/campaign-context";
 import { Portal as DropdownPortal } from "./Portal/Portal";
 import { BsSearch } from "react-icons/bs";
 import * as searchBarStyles from "./SearchBar.module.css";
+import {IoIosClose} from "react-icons/io";
 
 const SearchBar = ({ campaignList: campaignList }) => {
     const [searchCampaign, setSearchCampaign] = useState("");
@@ -102,7 +103,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
                     className={`${searchBarStyles.campaignLabelExit}`}
                     onClick={() => removeCampaignHandler(campaign)}
                 >
-                    X
+                    <IoIosClose  style={{margin:"0 -8px 2px 0"}} size={20}/>
                 </div>
             </div>
         ));
