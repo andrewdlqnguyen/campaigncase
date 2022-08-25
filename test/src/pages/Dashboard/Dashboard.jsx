@@ -28,6 +28,7 @@ const Dashboard = () => {
                             </span>
                         </div>
                         <div className={`${dashboardStyles.subHeader} global-mediumStyles`}>Performance <span style={{color: "#ff8c1a"}}>Metric System</span></div>
+                        <div>View and compare key business campaign performance metrics.</div>
                     </div>
                     {campaignList && <SearchBar campaignList={campaignList} />}
                     <CampaignList />

@@ -175,7 +175,6 @@ const CampaignList = () => {
 
     return (
         <>
-            <div>CampaignList Component</div>
             <div className="accordion" id="campaignAccordionList">
                 {campaignMetrics}
             </div>

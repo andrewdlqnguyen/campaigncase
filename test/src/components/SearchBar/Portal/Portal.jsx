@@ -17,9 +17,9 @@ export const Portal = (props) => {
 
     const dropDownStyle = {
       position: "absolute",
-      backgroundColor: "white",
-      color: "black",
-      border: "solid",
+    //   backgroundColor: "white",
+    //   color: "black",
+    //   border: "solid",
       zIndex: "30",
     };
 

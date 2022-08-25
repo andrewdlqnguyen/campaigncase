@@ -1,14 +1,15 @@
 import { useState, useContext } from "react";
 import campaignContext from "../../store/campaign-context";
 import { Portal as DropdownPortal } from "./Portal/Portal";
+import { BsSearch } from "react-icons/bs";
+import * as searchBarStyles from "./SearchBar.module.css";
 
 const SearchBar = ({ campaignList: campaignList }) => {
     const [searchCampaign, setSearchCampaign] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
-    // const [selectedCampaign, setSelectedCampaign] = useState([]); //global state for itemPool to see it deselect
     const [coords, setCoords] = useState({});
-    const { selectedCampaigns, updateSelectedCampaigns : setSelectedCampaigns } = useContext(campaignContext);
-
+    const { selectedCampaigns, updateSelectedCampaigns: setSelectedCampaigns } =
+        useContext(campaignContext);
 
     let searchCount = 0; // dropdown search items
     let campaigns = campaignList;
@@ -38,9 +39,9 @@ const SearchBar = ({ campaignList: campaignList }) => {
         setSelectedCampaigns((prevState) => {
             const newArray = [...prevState];
 
-            return  newArray.filter((x) => {
-                    return x.id != campaign.id;
-                });
+            return newArray.filter((x) => {
+                return x.id != campaign.id;
+            });
         });
     };
 
@@ -62,13 +63,11 @@ const SearchBar = ({ campaignList: campaignList }) => {
         .map((campaign, index) => {
             searchCount++;
 
-            let selectedStyle = {
-                backgroundColor: "red",
-            };
+            let selectedStyle = {};
             selectedCampaigns.forEach((item) => {
                 if (Object.values(item).includes(campaign.id)) {
                     selectedStyle = {
-                        backgroundColor: "green",
+                        backgroundColor: "#fcbf7a",
                     };
                 }
             });
@@ -77,11 +76,12 @@ const SearchBar = ({ campaignList: campaignList }) => {
                 <li
                     key={campaign.id + index}
                     onMouseDown={() => selectCampaignHandler(campaign)}
-                    className="campaign-item"
+                    className={`${searchBarStyles.campaignItem}`}
                     style={{ ...selectedStyle }}
                 >
                     <div>
-                        #{campaign.id} - {campaign.name}
+                        <span>{campaign.name}</span>
+                        <small className="ms-2">- ID: {campaign.id}</small>
                     </div>
                 </li>
             );
@@ -91,46 +91,64 @@ const SearchBar = ({ campaignList: campaignList }) => {
 
     if (selectedCampaigns) {
         selectedCampaignList = selectedCampaigns.map((campaign, index) => (
-            <div key={index}>
-                <span>
-                    {campaign.id} - {campaign.name}{" "}
-                </span>
-                <span onClick={() => removeCampaignHandler(campaign)}>X</span>
+            <div
+                className={`${searchBarStyles.campaignLabel} global-mediumStyles mx-2 d-flex justify-content-between`}
+                key={index}
+            >
+                <div>
+                    {campaign.id} : {campaign.name}
+                </div>
+                <div
+                    className={`${searchBarStyles.campaignLabelExit}`}
+                    onClick={() => removeCampaignHandler(campaign)}
+                >
+                    X
+                </div>
             </div>
         ));
     }
 
     return (
         <>
-            <div>SearchBar Component</div>
-            <input
-                // className="searchBox"
-                type="text"
-                // name="search"
-                placeholder="search campaign..."
-                value={searchCampaign}
-                onChange={(e) => setSearchCampaign(e.target.value)}
-                onFocus={(e) => dropdownClickHandler(e.target)}
-                onBlur={() => setShowDropdown(false)}
-            />
+            <div className="d-flex flex-row ps-0">
+                <div className="flex-grow-1">
+                <input
+                    className={`${searchBarStyles.searchBox} global-lightStyles`}
+                    type="text"
+                    // name="search"
+                    placeholder="search campaign by ID or Name..."
+                    value={searchCampaign}
+                    onChange={(e) => setSearchCampaign(e.target.value)}
+                    onFocus={(e) => dropdownClickHandler(e.target)}
+                    onBlur={() => setShowDropdown(false)}
+                />
+                </div>
+                <BsSearch style={{margin: "10px 0 0 -40px"}} size={25}/>
+            </div>
             {showDropdown && (
                 <DropdownPortal coords={coords}>
-                    <div>List of Campaigns</div>
-                    <div className="px-4 py-2" style={{ textAlign: "right" }}>
-                        <small>search count: {searchCount}</small>
+                    <div className={searchBarStyles.dropdownContainer}>
+                        <ul
+                            id="scrollbar-thin"
+                            className={`${searchBarStyles.dropdownContext}`}
+                        >
+                            {dropDownCampaignItems}
+                        </ul>
+                        {/* <div style={{ textAlign: "left", padding: "" }}>
+                            <small className={`${searchBarStyles.searchBox} global-lightStyles`}>search count: {searchCount}</small>
+                        </div> */}
                     </div>
-                    <ul
-                        id="scrollbar-thin"
-                        className="dropdown-container px-4"
-                        style={{ listStyle: "none" }}
-                    >
-                        {dropDownCampaignItems}
-                    </ul>
                 </DropdownPortal>
             )}
-            <div>
-                {selectedCampaignList && <div>{selectedCampaignList}</div>}
-            </div>
+            {selectedCampaignList.length > 0 && (
+                <div className={`${searchBarStyles.campaignLabelContainer}`}>
+                    {selectedCampaignList && (
+                        <div className="d-flex flex-wrap">
+                            {selectedCampaignList}
+                        </div>
+                    )}
+                </div>
+            )}
         </>
     );
 };
