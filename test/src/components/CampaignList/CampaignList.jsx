@@ -6,6 +6,7 @@ import Header from "./CampaignItems/CampaignItem/Header/Header";
 import Iteration from "./CampaignItems/CampaignItem/Header/Iteration/Iteration";
 import Title from "./CampaignItems/CampaignItem/Header/Title/Title";
 import Metrics from "./CampaignItems/CampaignItem/Metrics/Metric";
+import Spinner from "../../components/UI/Spinner/Spinner";
 
 const CampaignList = () => {
     const [activeContents, setActiveContents] = useState([]);
@@ -165,7 +166,7 @@ const CampaignList = () => {
                 aria-labelledby={`campaignHead-${campaign.id}`}
             >
                 <div className="accordion-body">
-                    {contentMetrics[campaign.id] && (
+                    {contentMetrics[campaign.id] ? (
                         <div>
                             <Row>
                                 <Header
@@ -246,7 +247,7 @@ const CampaignList = () => {
                                 </div>
                             </Row>
                         </div>
-                    )}
+                    ): <Spinner/>}
                 </div>
             </div>
         </div>
