@@ -1,10 +1,16 @@
 import { useState, useContext } from "react";
-import campaignContext from "../../store/campaign-context";
-import { Portal as DropdownPortal } from "./Portal/Portal";
 import { BsSearch } from "react-icons/bs";
-import * as searchBarStyles from "./SearchBar.module.css";
-import {IoIosClose} from "react-icons/io";
+import { IoIosClose } from "react-icons/io";
+import campaignContext from "../../store/campaign-context";
 
+import { Portal as DropdownPortal } from "../UI/Portal/Portal";
+import * as searchBarStyles from "./SearchBar.module.css";
+
+/**
+ * SearchBar is one of the main feature component that acts as the controller for the application
+ * @param {*} param0 destructure props that consumes a list of campaigns and populate the dropdown box
+ * @returns Search bar with hidden drop down
+ */
 const SearchBar = ({ campaignList: campaignList }) => {
     const [searchCampaign, setSearchCampaign] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
@@ -55,6 +61,9 @@ const SearchBar = ({ campaignList: campaignList }) => {
         setShowDropdown(true);
     };
 
+    /**
+     * Custom dropdown box that requires portal to display over the current web page.
+     */
     let dropDownCampaignItems = campaigns
         .filter(
             (campaign) =>
@@ -103,7 +112,7 @@ const SearchBar = ({ campaignList: campaignList }) => {
                     className={`${searchBarStyles.campaignLabelExit}`}
                     onClick={() => removeCampaignHandler(campaign)}
                 >
-                    <IoIosClose  style={{margin:"0 -8px 2px 0"}} size={20}/>
+                    <IoIosClose style={{ margin: "0 -8px 2px 0" }} size={20} />
                 </div>
             </div>
         ));
@@ -113,18 +122,17 @@ const SearchBar = ({ campaignList: campaignList }) => {
         <>
             <div className="d-flex flex-row ps-0">
                 <div className="flex-grow-1">
-                <input
-                    className={`${searchBarStyles.searchBox} global-lightStyles`}
-                    type="text"
-                    // name="search"
-                    placeholder="search campaign by ID or Name..."
-                    value={searchCampaign}
-                    onChange={(e) => setSearchCampaign(e.target.value)}
-                    onFocus={(e) => dropdownClickHandler(e.target)}
-                    onBlur={() => setShowDropdown(false)}
-                />
+                    <input
+                        className={`${searchBarStyles.searchBox} global-lightStyles`}
+                        type="text"
+                        placeholder="search campaign by ID or Name..."
+                        value={searchCampaign}
+                        onChange={(e) => setSearchCampaign(e.target.value)}
+                        onFocus={(e) => dropdownClickHandler(e.target)}
+                        onBlur={() => setShowDropdown(false)}
+                    />
                 </div>
-                <BsSearch style={{margin: "10px 0 0 -40px"}} size={25}/>
+                <BsSearch style={{ margin: "10px 0 0 -40px" }} size={25} />
             </div>
             {showDropdown && (
                 <DropdownPortal coords={coords}>

@@ -1,3 +1,8 @@
+/**
+ * The current number called to backend for the campaign.
+ * @param {*} param0 prop values from API endpoint.
+ * @returns a ui of the current number called to back end and update date.
+ */
 const Iteration = ({ campaignIteration }) => {
   const event = new Date();
 

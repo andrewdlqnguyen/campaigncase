@@ -1,29 +1,35 @@
-import { useState } from 'react';
-import { SaveToLocalStorage } from '../helper/helper';
-import CampaignContext from './campaign-context';
+import { useState } from "react";
+import CampaignContext from "./campaign-context";
 
-const CampaignProvider = props => {
-  const [selectedCampaigns, setSelectedCampaigns] = useState([]); //global state for itemPool to see it deselect
-  const [userPreferences, setUserPreferences] = useState({
-    ctrUnit: "%",
-  });
+import { SaveToLocalStorage } from "../helper/helper";
 
-  const updateSelectedCampaigns = (value) => {
-    SaveToLocalStorage("selectedCampaign", value);
-    setSelectedCampaigns(value);
-  }
+/**
+ * Setting configuration for global store context
+ * @param {*} props campaign global provider for states
+ * @returns global store wrapper for web application
+ */
+const CampaignProvider = (props) => {
+    const [selectedCampaigns, setSelectedCampaigns] = useState([]); //global state for itemPool to see it deselect
+    const [userPreferences, setUserPreferences] = useState({
+        ctrUnit: "%",
+    });
 
-  const campaignContext = {
-    selectedCampaigns: selectedCampaigns,
-    userPreference: userPreferences,
-    updateSelectedCampaigns: updateSelectedCampaigns,
-  };
+    const updateSelectedCampaigns = (value) => {
+        SaveToLocalStorage("selectedCampaign", value);
+        setSelectedCampaigns(value);
+    };
 
-  return (
-    <CampaignContext.Provider value={campaignContext}>
-      {props.children}
-    </CampaignContext.Provider>
-  )
-}
+    const campaignContext = {
+        selectedCampaigns: selectedCampaigns,
+        userPreference: userPreferences,
+        updateSelectedCampaigns: updateSelectedCampaigns,
+    };
+
+    return (
+        <CampaignContext.Provider value={campaignContext}>
+            {props.children}
+        </CampaignContext.Provider>
+    );
+};
 
 export default CampaignProvider;

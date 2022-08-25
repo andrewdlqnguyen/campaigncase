@@ -1,3 +1,8 @@
+/**
+ * Title of the accordion item
+ * @param {*} param0 prop values from API endpoint.
+ * @returns Accordion Item title.
+ */
 const Title = ({ campaignTitle, campaignId }) => {
   return (
     <div className="d-flex align-items-end global-mediumStyles">

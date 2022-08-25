@@ -1,4 +1,8 @@
-
+/**
+ * fetching function to hit API endpoint and receive json data.
+ * @param {*} url passed in url endpoint/API for calling
+ * @param {*} callback function to run after response is given
+ */
 export const Fetch = (url, callback) => {
     fetch(url)
         .then((response) => {
@@ -16,6 +20,11 @@ export const Fetch = (url, callback) => {
         });
 };
 
+/**
+ * Used to save to local store for session cache. Users can go back to where they left off
+ * @param {*} objectName localStorage name
+ * @param {*} state  localStorage value
+ */
 export const SaveToLocalStorage = (objectName, state) => {
     try {
         localStorage.setItem(objectName, JSON.stringify(state));
@@ -24,6 +33,11 @@ export const SaveToLocalStorage = (objectName, state) => {
     }
 };
 
+/**
+ * Used to read local store from session cache. Users can go back to where they left off
+ * @param {*} objectName  localStorage name saved
+ * @returns Json data
+ */
 export const ReadFromLocalStorage = (objectName) => {
     try {
         const stateStr = localStorage.getItem(objectName);

@@ -3,7 +3,11 @@ import { HiOutlineCursorClick, HiOutlineUsers } from "react-icons/hi";
 import { ImStatsBars2 } from "react-icons/im";
 import * as metricsStyles from "./Metrics.module.css";
 
-
+/**
+ * Metric block for performance metric data. This can be broken down further to more modular components.
+ * @param {*} param0 prop values from API endpoint.
+ * @returns a block of  text informantion regarding the data key values.
+ */
 const Metrics = ({ campaignName, campaignValue, campaignMetric }) => {
     let iconDisplay = "";
     let styling = {};
