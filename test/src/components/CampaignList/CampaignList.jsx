@@ -1,6 +1,11 @@
 import { useContext, useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
 import { Fetch } from "../../helper/helper";
 import campaignContext from "../../store/campaign-context";
+import Header from "./CampaignItems/CampaignItem/Header/Header";
+import Iteration from "./CampaignItems/CampaignItem/Header/Iteration/Iteration";
+import Title from "./CampaignItems/CampaignItem/Header/Title/Title";
+import Metrics from "./CampaignItems/CampaignItem/Metrics/Metric";
 
 const CampaignList = () => {
     const [activeContents, setActiveContents] = useState([]);
@@ -100,6 +105,11 @@ const CampaignList = () => {
                             recentImpression: data.impressions,
                             recentClicks: data.clicks,
                             recentUsers: data.users,
+                            recentCTR:
+                                (
+                                    (data.clicks / data.impressions) *
+                                    100
+                                ).toFixed(2) + userPreference.ctrUnit,
                         },
                     }));
                 }
@@ -157,15 +167,84 @@ const CampaignList = () => {
                 <div className="accordion-body">
                     {contentMetrics[campaign.id] && (
                         <div>
-                            {contentMetrics[campaign.id].color}|{" "}
-                            {contentMetrics[campaign.id].totalImpression}|{" "}
-                            {contentMetrics[campaign.id].totalClicks}|{" "}
-                            {contentMetrics[campaign.id].totalUsers}|{" "}
-                            {contentMetrics[campaign.id].ctr}|{" "}
-                            {contentMetrics[campaign.id].currentNumber}|{" "}
-                            {contentMetrics[campaign.id].recentImpression}|{" "}
-                            {contentMetrics[campaign.id].recentClicks}|{" "}
-                            {contentMetrics[campaign.id].recentUsers}
+                            <Row>
+                                <Header
+                                    campaignTitle={
+                                        contentMetrics[campaign.id].color
+                                    }
+                                    campaignId={campaign.id}
+                                    campaignIteration={
+                                        contentMetrics[campaign.id]
+                                            .currentNumber
+                                    }
+                                />
+                            </Row>
+                            <Row>
+                                <div className="global-mediumStyles">Most Recent</div>
+                                <div className="d-flex flex-wrap">
+                                    <Metrics
+                                        campaignName="Most Recent Impression"
+                                        campaignValue={
+                                            contentMetrics[campaign.id]
+                                                .recentImpression
+                                        }
+                                        campaignMetric="impression"
+                                    />
+                                    <Metrics
+                                        campaignName="Most Recent Clicks"
+                                        campaignValue={
+                                            contentMetrics[campaign.id]
+                                                .recentClicks
+                                        }
+                                        campaignMetric="clicks"
+                                    />
+                                    <Metrics
+                                        campaignName="Most Recent Users"
+                                        campaignValue={
+                                            contentMetrics[campaign.id]
+                                                .recentUsers
+                                        }
+                                        campaignMetric="users"
+                                    />
+                                </div>
+                                <div>
+                                    <Metrics
+                                        campaignName="CTR - Click Through Rate"
+                                        campaignValue={
+                                            contentMetrics[campaign.id].recentCTR
+                                        }
+                                    />
+                                </div>
+                                <div className="global-mediumStyles">Total</div>
+                                <div className="d-flex flex-wrap">
+                                    <Metrics
+                                        campaignName="Total Impression"
+                                        campaignValue={contentMetrics[campaign.id].totalImpression
+                                        }
+                                        campaignMetric="impression"
+                                    />
+                                    <Metrics
+                                        campaignName="Total Clicks"
+                                        campaignValue={contentMetrics[campaign.id].totalClicks
+                                        }
+                                        campaignMetric="clicks"
+                                    />
+                                    <Metrics
+                                        campaignName="Total Users"
+                                        campaignValue={contentMetrics[campaign.id].totalUsers
+                                        }
+                                        campaignMetric="users"
+                                    />
+                                </div>
+                                <div>
+                                    <Metrics
+                                        campaignName="CTR - Click Through Rate"
+                                        campaignValue={
+                                            contentMetrics[campaign.id].ctr
+                                        }
+                                    />
+                                </div>
+                            </Row>
                         </div>
                     )}
                 </div>

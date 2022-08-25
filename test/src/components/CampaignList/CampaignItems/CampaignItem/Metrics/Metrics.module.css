@@ -1,0 +1,9 @@
+.container {
+  background-color: rgba(211, 227, 255, 0.432);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.color {
+  color: #cf534a;
+}

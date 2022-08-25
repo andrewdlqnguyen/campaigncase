@@ -17,7 +17,7 @@ const Dashboard = () => {
     return (
         <>
             <Container>
-                <Row className="mx-5">
+                <Row className="m-5">
                     <div className={` ${dashboardStyles.title} mb-5`}>
                         <div className={`${dashboardStyles.header} global-boldStyles`}>
                             <span className={dashboardStyles.companyName}>
