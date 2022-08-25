@@ -3,7 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import CampaignList from "../../components/CampaignList/CampaignList";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { Fetch } from "../../helper/helper";
-import * as containerStyles from "./Dashboard.module.css";
+import * as dashboardStyles from "./Dashboard.module.css";
 
 const Dashboard = () => {
     const [campaignList, setCampaignList] = useState();
@@ -18,16 +18,16 @@ const Dashboard = () => {
         <>
             <Container>
                 <Row className="mx-5">
-                    <div className={` ${containerStyles.title} mb-5`}>
-                        <div className={`${containerStyles.header} global-boldStyles`}>
-                            <span className={containerStyles.companyName}>
+                    <div className={` ${dashboardStyles.title} mb-5`}>
+                        <div className={`${dashboardStyles.header} global-boldStyles`}>
+                            <span className={dashboardStyles.companyName}>
                                 Loblaw{" "}
                             </span>
-                            <span className={containerStyles.companySubName}>
+                            <span className={dashboardStyles.companySubName}>
                                 Technology
                             </span>
                         </div>
-                        <div className={`${containerStyles.subHeader} global-mediumStyles`}>Performance Metric System</div>
+                        <div className={`${dashboardStyles.subHeader} global-mediumStyles`}>Performance <span style={{color: "#ff8c1a"}}>Metric System</span></div>
                     </div>
                     {campaignList && <SearchBar campaignList={campaignList} />}
                     <CampaignList />
