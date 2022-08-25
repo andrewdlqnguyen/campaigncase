@@ -1,0 +1,22 @@
+/* Global CSS */
+
+.global-boldStyles {
+  font-weight: 700;
+  font-style: normal;
+}
+
+.global-mediumStyles {
+  font-weight: 500;
+  font-style: normal;
+}
+
+.global-lightStyles {
+  font-weight: 300;
+  font-style: normal;
+}
+
+.global-thinStyles {
+  font-weight: 200;
+  font-style: normal;
+}
+

@@ -1,0 +1,21 @@
+.title {
+  margin-top: 200px;
+  text-align: center;
+}
+
+.header {
+  font-size: 5vw;
+}
+
+.subHeader {
+  color: red;
+  font-size: 30px;
+}
+
+.companyName {
+  color: black;
+}
+
+.companySubName {
+  color: grey;
+}
